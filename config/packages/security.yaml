@@ -1,0 +1,57 @@
+security:
+    encoders:
+        App\Entity\Utilisateur:
+            algorithm: auto
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\Utilisateur
+                property: email
+    firewalls:  
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            access_denied_url: /accessDenied
+            anonymous: lazy
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
+
+ # ici se trouve votre contenu par défaut
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    
+    # Dans la partie access_control nous définissons les routes protégées
+    access_control:
+        - { path: ^/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/oubli_mdp, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/nouveau_mdp, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/confirmation_compte, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_ENCADRANT }
+        - { path: ^/stage/recapitulatif_des_stages, roles: [ROLE_ENCADRANT, ROLE_FORMATEUR_TRE] }
+        - { path: ^/recherche_stage, roles: [ROLE_ENCADRANT, ROLE_FORMATEUR_TRE, ROLE_STAGIAIRE] }
+        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ../admin, roles: ROLE_ENCADRANT }
+        - { path: ../formateur, roles: ROLE_FORMATEUR }
+
+    # La partie role_hierarchy contient la hiérarchie des rôles
+    role_hierarchy:
+        ROLE_FORMATEUR: ROLE_STAGIAIRE
+        ROLE_FORMATEUR_TRE: ROLE_FORMATEUR
+        ROLE_ENCADRANT: ROLE_FORMATEUR_TRE

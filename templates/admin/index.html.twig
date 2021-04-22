@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration!{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1> Administration </h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Section</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Utilisateurs</td>
+                <td class="text-center"><a href="{{path('utilisateurs_index')}}" title="Voir la liste des utilisateurs"><i class="far fa-eye"></i></a>
+                <a href="{{path('app_register')}}" title="Ajouter un utilisateur"><i class="fas fa-plus"></i></a></td>
+            </tr>
+            <tr>
+                <td>Session de formation</td>
+                <td class="text-center"><a href="{{path('session_index')}}" title="Voir la liste des sessions de formation"><i class="far fa-eye"></i></a>
+                <a href="{{path('session_new')}}" title="Ajouter une session de formation"><i class="fas fa-plus"></i></a></td>
+            </tr>
+            <tr>
+                <td>Adresses</td>
+                <td class="text-center"><a href="{{path('adresse_index')}}" title="Voir la liste des Adresses"><i class="far fa-eye"></i></a>
+                <a href="{{path('adresse_new')}}" title="Ajouter une adresse"><i class="fas fa-plus"></i></a></td>
+            </tr>
+            {# <tr>
+                <td>Entreprise</td>
+                <td class="text-center"><a href="{{path('entreprise_index')}}" title="Voir la liste des Entreprises"><i class="far fa-eye"></i></a>
+                <a href="{{path('entreprise_new')}}" title="Ajouter une entreprise"><i class="fas fa-plus"></i></a></td>
+            </tr> #}
+    </table>
+</div>
+{% endblock %}

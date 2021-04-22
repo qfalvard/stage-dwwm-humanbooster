@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evaluations{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Evaluations des modules de formation</h1>
+    <div class="text-center">
+        <h2>{{session.intitule}} - {{stagiaire.prenom }} {{stagiaire.nom|upper }}</h2>
+    </div>
+    <div class="d-flex justify-content-between my-3">
+        <a href="{{ path('session_show', {'id': session.id}) }}#stagiaires"><button class="secondaire">Retour aux
+                stagiaires</button></a>
+        <a href="{{ path('evaluation_pdf',{'session': session.id, 'stagiaire': stagiaire.id}) }}"><button
+                class="btnSupprimer">Imprimer en pdf</button></a>
+    </div>
+
+    {% for ccp in ccps %}
+    </br>
+    <h3 class="titre_pro_ccp">{{ccp.nom}}</h3>
+    {% for competence in ccp.competence %}
+    <h4 class="titre_pro_competence">Compétence : {{competence.nom}}</h4>
+    {% for module in competence.module %}
+    <h5 class="titre_pro_module">Module : {{module.nom}}</h5>
+    <form
+        action="{{ path('evaluation_evaluer', { 'session': session.id, 'module': module.id, 'utilisateur': stagiaire.id }) }}"
+        method="post">
+        <table class="">
+            <tr>
+                <th>Objectifs</th>
+                <th>Date</th>
+                <th>Acquisition</th>
+                <th>Commentaire</th>
+            </tr>
+            {% for i in 0..objectifs | length - 1 %}
+            {% set isValid  = true %}
+            {% if objectifs[i].module.id == module.id %}
+            <tr>
+                <th style="width: 40%;">
+                    {{objectifs[i].nom}}
+                    <input type="hidden" name="objectif{{i}}" value="{{ objectifs[i].id }}">
+                </th>
+                <td>
+                    <table class="table-borderless">
+                        {% if objectifs[i].module.id == module.id %}
+                        {% for evaluation in evaluations %}
+                        <tr class="bg-transparent">
+                            {% if evaluation.objectif.id == objectifs[i].id and evaluation.utilisateur.id == stagiaire.id %}
+                            <td>
+                                {{evaluation.date | date ("d/m/Y")}}
+                            </td>
+                            {% if evaluation.niveauAcquisition == 15 %}
+                            {% set isValid = false %}
+                            {% endif %}
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </table>
+                    {% if isValid == true %}
+                    {% for former in session.formers %}
+                    {% if app.user.id == former.formateur.id and former.module.id == module.id %}
+                    <input class="form-control" type="date" name="date{{i}}" id="dateEvaluation{{i}}">
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </td>
+                <td>
+                    <table class="table-borderless">
+                        {% if objectifs[i].module.id == module.id %}
+                        {% for evaluation in evaluations %}
+                        <tr class="bg-transparent">
+                            {% if evaluation.objectif.id == objectifs[i].id and evaluation.utilisateur.id == stagiaire.id %}
+                            <td>
+                                {% if evaluation.niveauAcquisition == 5 %}
+                                <i class="fas fa-circle inctf"></i> Non acquis
+                                {% elseif evaluation.niveauAcquisition == 10 %}
+                                <i class="fas fa-circle text-warning"></i> En cours d'acquisition
+                                {% else %}
+                                <i class="fas fa-circle actf"></i> Acquis
+                                {% endif %}
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </table>
+                    {% if isValid == true %}
+                    {% for former in session.formers %}
+                    {% if app.user.id == former.formateur.id and former.module.id == module.id %}
+                    <select class="form-control acquisition" style="width: 100%;" name="aquisition{{i}}" id="aquisition{{i}}"
+                        onchange="acquisitions('{{i}}')">
+                        <option  id="foo" value="-1">Niveau d’acquisition</option>
+                        <option value="5">Non-acquis</option>
+                        <option value="10">En cours d’acquisition</option>
+                        <option value="15">Acquis</option>
+                    </select>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </td>
+                <td>
+                    <table class="table-borderless">
+                        {% if objectifs[i].module.id == module.id %}
+                        {% for evaluation in evaluations %}
+                        <tr class="bg-transparent">
+                            {% if evaluation.objectif.id == objectifs[i].id and evaluation.utilisateur.id == stagiaire.id %}
+                            {% if evaluation.niveauAcquisition == 15 %}
+                            <td>
+                                &nbsp;
+                            </td>
+                            {% endif %}
+                            <td>
+                                {{evaluation.commentaire}}
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </table>
+                    {% if isValid == true %}
+                    {% for former in session.formers %}
+                    {% if app.user.id == former.formateur.id and former.module.id == module.id %}
+                    <textarea class="form-control smallarea textarea" name="commentaire{{i}}" id="commentaire{{i}}"
+                        placeholder="commentaire"></textarea>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </td>
+            </tr>
+            <input type="hidden" name="nbObjectifs" value="{{i + 1}}">
+            {% endif %}
+            {% endfor %}
+        </table>
+        {% for former in session.formers %}
+        {% if app.user.id == former.formateur.id and former.module.id == module.id %}
+        <div class="d-flex justify-content-end mt-1 mb-5">
+            <input type="hidden" name="formateur" value="{{app.user.id}}">
+            <button class="primaire">Valider</button>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </form>
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+</div>
+{% endblock %}

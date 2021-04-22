@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle adresse{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1 class="text-center">Nouvelle adresse</h1>
+
+    {{ include('adresse/_form.html.twig') }}
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<!-- Va savoir pourquoi, cette ligne est nécessaire, même si elle est dans le base.html.twig ! -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script> 
+
+<script>
+	$('select').select2({
+    theme: 'bootstrap4',
+});
+</script>
+{% endblock %}
+
+

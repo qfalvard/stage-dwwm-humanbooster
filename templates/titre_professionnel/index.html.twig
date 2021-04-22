@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TitreProfessionnel index{% endblock %}
+
+{% block body %}
+
+<div class="encadre">
+    <h1>Liste des Titres Professionnels</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sigle</th>
+                <th>Nom</th>
+                <th class="text-center">Date d'application</th>
+                <th class="text-center">Détails</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for titre_professionnel in titre_professionnels %}
+            <tr>
+                {% if titre_professionnel.isActif == 'true' %}
+                <td><strong>{{ titre_professionnel.sigle }}</strong></td>
+                <td><strong>{{ titre_professionnel.nom }}</strong></td>
+                <td class="text-center">{{ titre_professionnel.dateApplication|date("d/m/Y") }}</td>
+                <td class="text-center">
+                    <p><a href="{{ path('titre_professionnel_show', {'id': titre_professionnel.id}) }}" title="Voir le titre professionnel : {{titre_professionnel.nom}}"><i class="far fa-eye"></i></a></p>
+                </td>
+            <tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+    <div class="container row ml-auto">
+        <div class="ml-auto">
+            <a href="{{ path('titre_professionnel_new') }}"><button class="primaire">Ajouter un titre professionnel</button></a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('stagiaire_delete', {'session': session.id, 'stagiaire': stagiaire.id } ) }}" onsubmit="return confirm('Etes-vous sûr de vouloir supprimer ce stagiaire ?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ session.id) }}">
+    <button id="supp_stagiaire" type="submit" title="Supprimer le stagiaire de cette session"><i class="far fa-trash-alt"></i></button>
+</form>

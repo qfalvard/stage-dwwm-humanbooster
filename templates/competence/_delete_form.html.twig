@@ -1,0 +1,7 @@
+{% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+<form method="post" action="{{ path('competence_delete', {'id': competence.id, 'titre': titre.id}) }}" onsubmit="return confirm('Êtes-vous vraiment sur de vouloir supprimer cette compétence?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ competence.id) }}">
+    <button class="btnSupprimer">Supprimer</button>
+</form>
+{% endif %}

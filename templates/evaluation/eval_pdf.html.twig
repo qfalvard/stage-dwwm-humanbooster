@@ -1,0 +1,120 @@
+{% extends 'base_pdf.html.twig' %}
+
+
+
+{% block body %}
+<div class="encadre">
+    <h3 class="text-center">Evaluations des modules de formation</h3>
+    <div class="text-center">
+        <h3>{{session.intitule}} - {{stagiaire.prenom }} {{stagiaire.nom|upper }}</h3>
+    </div>
+
+    {% for ccp in ccps %}
+    <div class="h5" style="background-color: #FFD715"> {{ccp.nom}}</div>
+        {% for competence in ccp.competence %}
+        <div class="h6"><u> Compétence : {{competence.nom}}</u></div>
+            {% for module in competence.module %} <h6 class="text-center">Module : {{module.nom}}</h6>
+            <form action="{{ path('evaluation_evaluer', { 'session': session.id, 'module': module.id, 'utilisateur': stagiaire.id }) }}" method="post">
+                <table class="table table-bordered">
+                    <tr class="table-secondary">
+                        <th>Objectifs</th>
+                        <th>Date</th>
+                        <th>Acquisition</th>
+                        <th>Commentaire</th>
+                    </tr>
+                    {% for i in 0..objectifs | length - 1 %}
+                    {% set isValid  = true %}
+                    {% if objectifs[i].module.id == module.id %}
+                    <tr>
+                        <th style="width: 40%;">
+                            {{objectifs[i].nom}}
+                        </th>
+                        <td>
+                            <table class="table-borderless">
+                                {% if objectifs[i].module.id == module.id %}
+                                {% for evaluation in evaluations %}
+
+                                
+                                    {% if evaluation.objectif.id == objectifs[i].id and evaluation.utilisateur.id == stagiaire.id %}
+                                    <tr class="bg-transparent">
+                                    <td>
+                                        {{evaluation.date | date ("d/m/Y")}}
+                                    </td>
+                                    {% if evaluation.niveauAcquisition == 15 %}
+                                    {% set isValid = false %}
+                                 
+                                    {% endif %}
+                                     </tr>
+                                    {% endif %}
+                             
+                                {% endfor %}
+                                {% endif %}
+                            </table>
+                            {% if isValid == true %}
+                            {% for former in session.formers %}
+                            {% if app.user.id == former.formateur.id and former.module.id == module.id %}
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <table class="table-borderless">
+                                {% if objectifs[i].module.id == module.id %}
+                                {% for evaluation in evaluations %}
+                                
+                                    {% if evaluation.objectif.id == objectifs[i].id and evaluation.utilisateur.id == stagiaire.id %}
+                                   <tr class="bg-transparent">
+                                    <td>
+                                        {% if evaluation.niveauAcquisition == 5 %}
+                                        Non acquis
+                                        {% elseif evaluation.niveauAcquisition == 10 %}
+                                        En cours d'acquisition
+                                        {% else %}
+                                        Acquis
+                                        {% endif %}
+                                    </td>
+                                    </tr>
+                                    {% endif %}
+                                
+                                {% endfor %}
+                                {% endif %}
+                            </table>
+                            {% if isValid == true %}
+                            {% for former in session.formers %}
+                            {% if app.user.id == former.formateur.id and former.module.id == module.id %}
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <table class="table-borderless">
+                                {% if objectifs[i].module.id == module.id %}
+                                {% for evaluation in evaluations %}
+                                
+                                    {% if evaluation.objectif.id == objectifs[i].id and evaluation.utilisateur.id == stagiaire.id %}
+                                    <tr class="bg-transparent">
+                                    <td>
+                                        {{evaluation.commentaire}}
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                            </table>
+                            {% if isValid == true %}
+                            {% for former in session.formers %}
+                            {% if app.user.id == former.formateur.id and former.module.id == module.id %}
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </form>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+</div>
+{% endblock %}

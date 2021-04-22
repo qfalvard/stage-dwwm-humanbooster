@@ -1,0 +1,251 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Session{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>{{ session.intitule }}</h1>
+    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+    <div class="row px-3">
+        <div class="ml-auto">
+            {{ include('session/_delete_form.html.twig') }}
+        </div>
+    </div>
+    {% endif %}
+
+    <h3>Paramètres de la session</h3>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Titre professionnel</th>
+                <td>{{ session.titreProfessionnel.nom }}</td>
+            </tr>
+            <tr>
+                <th>Ville</th>
+                {% if session.adresse is defined %}
+                <td>{{ session.adresse.commune.nom }}</td>
+                {% else %}
+                <td></td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th>Date Début</th>
+                <td>{{ session.dateDebut ? session.dateDebut|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date Fin</th>
+                <td>{{ session.dateFin ? session.dateFin|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Debut Stage</th>
+                <td>{{ session.debutStage ? session.debutStage|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Fin Stage</th>
+                <td>{{ session.finStage ? session.finStage|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Moodle</th>
+                <td><a href="{{ session.Moodle }}" target="_blank">{{ session.Moodle }}</a></td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ session.isActif ? '<i class="fas fa-circle actf"></i>  Formation active' : '<i class="fas fa-circle inctf">  </i>Formation non active' }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+    <div class="d-flex justify-content-end">
+        <div>
+            <a href="{{ path('session_edit', {'id': session.id}) }}"><button class="secondaire">Modifier la
+                    session</button></a>
+        </div>
+    </div>
+    {% endif %}
+
+    <h3>Encadrants</h3>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    <table class="table-borderless">
+                        {% for encadrer in encadrers %}
+                        {% if encadrer.session.id == session.id %}
+                        <tr class="bg-transparent">
+                            <th class="text-left" scope="row" style="width: 400px;">
+                                {% if encadrer.ordre == 1 %}
+                                Chef de projet
+                                {% elseif encadrer.ordre == 2 %}
+                                Adjoint de gestion et projets
+                                {% elseif encadrer.ordre == 3 %}
+                                Responsable qualité
+                                {% endif %}
+                            </th>
+                            <td class="text-left" style="width: 400px;">
+                                {{ encadrer.encadrant.prenom }} {{ encadrer.encadrant.nom|upper }}
+                            </td>
+                            <td class="text-left">
+                                {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                                {{ include('session/_delete_encadrant.html.twig') }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </table>
+                    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                    <div class="pull-right">
+                        <div id="hideEnc" class="hide">
+                            {{ include('session/ajout_enc.html.twig') }}
+                        </div>
+                        <button class="secondaire pull-right" id="encadrant">Ajouter un encadrant</button>
+                        {#<a href="{{ path('session_ajout_encadrant', { 'id': session.id }) }}"><button
+                                                    class="secondaire">Ajouter un
+                                                    encadrant</button></a>#}
+                    </div>
+                    {% endif %}
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="stagiaires">Stagiaires</h3>
+
+    <table class="table">
+        </tbody>
+        <tr>
+            <td>
+                <table class="table-borderless">
+                    {% for stagiaire in session.stagiaires %}
+                    <tr class="bg-transparent">
+                        <td style="width: 400px;" class="text-left">
+                            {{ stagiaire.prenom }} {{ stagiaire.nom|upper }}
+                        </td>
+                        <td class="" style="width: 400px;">
+                            {% if app.user.roles[0] != 'ROLE_STAGIAIRE' or app.user.id == stagiaire.id %}
+                            <a class="" href="{{ path('evaluation_indiv', { 'session': session.id, 'stagiaire': stagiaire.id}) }}" title="Evaluer le stagiaire {{stagiaire.prenom}} {{stagiaire.nom|upper}}"><i class="fas fa-tasks"></i></a>
+                            {% endif %}
+                        </td>
+                        {#Appel duu formulaire de suppresion. Nécessite l'id session et l'id stagiaire#}
+                        <td class="text-left">
+                            {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                            {{ include('session/_delete_stagiaire.html.twig') }}
+                            {% endif %}
+
+                    </tr>
+                    {% endfor %}
+                </table>
+                {#
+                    <div class="pull-right">
+                        <a href="{{ path('session_ajout_stagiaire', { 'id': session.id }) }}"><button class="secondaire">Ajouter un
+                                stagiaire</button></a>
+                    </div>
+                    #}
+                {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                <button class="secondaire pull-right" id="stag">Ajouter un stagiaire</button>
+                <div id="hideStag" class="hide">
+                    {{ include('session/ajout_stag.html.twig') }}
+                </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            </tbody>
+    </table>
+
+    <h3>Modules</h3>
+
+    <table class="table">
+        <tbody>
+            <td>
+                {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                <div class="pull-right mb-3">
+                    <a href="#hideForm"><button class="secondaire pull-right" id="form1">Ajouter un
+                        formateur</button></a>
+                    {#<a href="{{ path('session_ajout_formateur', { 'id': session.id }) }}"><button
+                                class="secondaire">Ajouter un
+                                formateur</button></a>
+                        #}
+                </div>
+                {% endif %}
+                <table class="table">
+                    <tr class="bg-light">
+                        <th scope="col"></th>
+                        <th class="text-center" scope="col">Formateurs</th>
+                        <th class="text-center" scope="col">Date de fin d'intervention</th>
+                        {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                        <th class="text-center" scope="col">Administration</th>
+                        {% endif %}
+                    </tr>
+                    {% for module in modules %}
+                    <tr class="bg-transparent">
+                        <th class="bg-light" scope="row">
+                            {{ module.nom }}
+                        </th>
+                        <td>
+                            {% for former in formers %}
+                            {% if former.session.id == session.id %}
+                            {% if former.module.id == module.id and former.formateur.nom is defined %}
+                            {{ former.formateur.prenom }} {{ former.formateur.nom | upper}} <br>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                {% for former in formers %}
+                                {% if former.session.id == session.id %}
+                                {% if former.module.id == module.id and former.formateur.nom is defined %}
+                                {{ former.dateFin | date("d/m/Y") }}<br>
+                                {% endif %}
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </td>
+                        {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                        <td>
+                            {% for former in formers %}
+                            {% if former.session.id == session.id %}
+                            {% if former.module.id == module.id and former.formateur.nom is defined %}
+                            <div class="d-flex justify-content-center">
+                                <a class=""
+                                    href="{{ path('session_editer_formateur', { 'session': session.id, 'former': former.id}) }}"  title="Modifier les informations de la ligne {{module.nom}}"><i
+                                        class="far fa-edit"></i></a>
+                                {{ include('session/_delete_formateur.html.twig') }}
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                <div id="hideForm" class="hide">
+                    {{ include('session/ajout_form.html.twig') }}
+                </div>
+                <div class="pull-right">
+                    <a href="#hideForm"><button class="secondaire pull-right" id="form2">Ajouter un
+                        formateur</button></a>
+                    {#<a href="{{ path('session_ajout_formateur', { 'id': session.id }) }}"><button
+                                class="secondaire">Ajouter un
+                                formateur</button></a>
+                        #}
+                </div>
+                {% endif %}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-center">
+        <a href="{{ path('session_index') }}"><button class="primaire mb-5">Liste des sessions</button></a>
+                <a href="{{ path('recherche_stage_index', {'session_id': session.id}) }}"><button
+                class="ml-2 primaire mb-5 text-center">Suivi de recherche de stage</button></a>
+    </div>
+</div>
+<script src="{{ asset('dist/js/show.js') }}"></script>
+{% endblock %}

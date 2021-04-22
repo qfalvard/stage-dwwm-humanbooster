@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Competence{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    
+    <h1>Competence n°{{ competence.id }}</h1>
+    <div class="row px-3 mb-3">
+        <div class="ml-auto">
+            {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                {{ include('competence/_delete_form.html.twig') }}
+            {% endif %}
+        </div>
+    </div>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Nom</th>
+                <td>{{ competence.nom }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row px-3">
+        <div class="mt-3">
+           <a class="secondaire p-2" href="{{ path('competence_index') }}">Retour à la liste des Compétences</a>
+        </div>
+        {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+        <div class="ml-auto">
+            <a href="{{ path('competence_edit', {'id': competence.id}) }}"><button class="primaire">Modifier</button></a>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

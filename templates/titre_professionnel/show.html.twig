@@ -1,0 +1,173 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Titre Professionnel{% endblock %}
+
+{% block body %}
+<div class="encadre">
+
+    <h1 class="mt-2"><strong>{{ titre_professionnel.sigle }}</strong> {{ titre_professionnel.nom }}
+        </br>{{ titre_professionnel.dateApplication|date("d/m/Y") }} </h1>
+    <div class="row px-3 mb-3">
+        <div class="ml-auto">
+            {{ include('titre_professionnel/_delete_form.html.twig') }}
+        </div>
+    </div>
+    <div class="row my-4 px-3">
+        <div>
+            <a class="secondaire p-2" href="{{ path('titre_professionnel_index') }}">Retour à la liste des titres</a>
+        </div>
+        {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+        <div class="ml-auto">
+            <a class="secondaire p-2" href="{{ path('titre_pro_c_c_p_new', {'titre': titre_professionnel.id })}}">Ajouter un CCP</a>
+        </div>
+        <div class="ml-auto">
+            <a class="secondaire p-2" href="{{ path('titre_professionnel_edit', {'id': titre_professionnel.id}) }}">Modifier le titre professionnel</a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="d-flex align-items-end flex-column">
+        {% for ccp in ccps|sort((a, b) => a.ordreAffichage <=> b.ordreAffichage) %}
+        <!--
+        ICI ON VERIFIE QU'IL Y A BIEN UNE ENTREE EN BASE DE DONNEE POUR NE PAS AVOIR D'ERREUR
+        ON VERIFIE AUSSI QU'IL Y AIT BIEN UNE CORRESPONDANCE ENTRE L'ENTITE PARENTE ET L'ENTITE ENFANT
+        -->
+        {% if titre_professionnel.id is defined and ccp.titreProfessionnel.id is defined and titre_professionnel.id == ccp.titreProfessionnel.id %}
+        <div class="titre_pro_ccp px-3">
+            <div>
+
+                <span>
+                    {{ ccp.nom}}
+                </span>
+
+            </div>
+            {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+            <div class="d-flex justify-content-end pl-1 align-items-center">
+                <div>
+                    <a href="{{ path('titre_pro_competence_new', {'titre': titre_professionnel.id, 'ccp': ccp.id }) }}">
+                        <i class="fas fa-plus" title="Ajouter une compétence"></i>
+                    </a>
+                </div>
+                <div class=" ml-1">
+                    <a href="{{ path('titre_pro_c_c_p_edit', {'ccp': ccp.id, 'titre':titre_professionnel.id}) }}">
+                        <i class="fas fa-edit" title="Modifier le ccp : {{ ccp.nom }} " style="font-weight: 400"></i></a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% for competence in competences|sort((a, b) => a.ordreAffichage <=> b.ordreAffichage) %}
+        <!--
+                    ICI ON VERIFIE QU'IL Y A BIEN UNE ENTREE EN BASE DE DONNEE POUR NE PAS AVOIR D'ERREUR
+                    ON VERIFIE AUSSI QU'IL Y AIT BIEN UNE CORRESPONDANCE ENTRE L'ENTITE PARENTE ET L'ENTITE ENFANT
+                    -->
+        {% if ccp.id is defined and competence.ccp.id is defined and ccp.id == competence.ccp.id %}
+        <div class="titre_pro_competence px-3">
+            <div>
+                <span>
+                    Compétence : {{ competence.nom }}
+                </span>
+            </div>
+            {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+            <div class="d-flex justify-content-end pl-2 align-items-center">
+                <div>
+                    <a href="{{ path('titre_pro_module_new', {'titre': titre_professionnel.id, 'ccp': ccp.id, 'competence': competence.id }) }}">
+                        <i class="fas fa-plus" title="Ajouter un module"></i>
+                    </a>
+                </div>
+                <div class=" ml-1">
+                    <a
+                        href="{{ path('titre_pro_competence_edit', {'id': competence.id, 'titre':titre_professionnel.id}) }}">
+                        <i class="fas fa-edit" style="font-weight: 400"
+                            title="Modifier la compétence : {{ competence.nom }}"></i>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% for module in modules|sort((a, b) => a.ordreAffichage <=> b.ordreAffichage) %}
+        <!--
+                            ICI ON VERIFIE QU'IL Y A BIEN UNE ENTREE EN BASE DE DONNEE POUR NE PAS AVOIR D'ERREUR
+                            ON VERIFIE AUSSI QU'IL Y AIT BIEN UNE CORRESPONDANCE ENTRE L'ENTITE PARENTE ET L'ENTITE ENFANT
+                            -->
+        {% if competence.id is defined and module.competence.id is defined and competence.id == module.competence.id %}
+        <div class="titre_pro_module px-3">
+            <div>
+                <span>
+                    Module : {{ module.nom }}
+                    {% if module.examen == "oui" %}
+                    | Contrôle continue
+                    {% endif %}
+                </span>
+            </div>
+            {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+            <div class="d-flex justify-content-end pl-2 align-items-center">
+                <div>
+                    <a href="{{ path('titre_pro_objectif_new', {'titre': titre_professionnel.id, 'ccp': ccp.id, 'competence': competence.id, 'module': module.id }) }}">
+                        <i class="fas fa-plus" title="Ajouter un objectif"></i>
+                        </a>
+                </div>
+                <div class=" ml-1">
+                    <a
+                        href="{{ path('titre_pro_module_edit',  {'titre': titre_professionnel.id, 'ccp': ccp.id, 'competence': competence.id, 'module': module.id }) }}">
+                        <i class="fas fa-edit" style="font-weight: 400"
+                            title="Modifier le module : {{ module.nom }}"></i>
+                        </a>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+
+        {% for objectif in objectifs|sort((a, b) => a.ordreAffichage <=> b.ordreAffichage)%}
+        <!--
+                                ICI ON VERIFIE QU'IL Y A BIEN UNE ENTREE EN BASE DE DONNEE POUR NE PAS AVOIR D'ERREUR
+                                ON VERIFIE AUSSI QU'IL Y AIT BIEN UNE CORRESPONDANCE ENTRE L'ENTITE PARENTE ET L'ENTITE ENFANT
+                                -->
+        {% if module.id is defined and objectif.module.id is defined and module.id == objectif.module.id %}
+        <div class="titre_pro_objectif px-3">
+            <div>
+                <span>
+                    Objectif : {{ objectif.nom }}
+                </span>
+            </div>
+            {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+            <div class="d-flex justify-content-end pl-2 align-items-center">
+                <div class=" ml-1">
+                    <a href="{{ path('titre_pro_objectif_edit',  {'titre': titre_professionnel.id, 'ccp': ccp.id, 'competence': competence.id, 'module': module.id, 'objectif': objectif.id }) }}">
+                        <i class="fas fa-edit" style="font-weight: 400" title="Modifier l'objectif : {{ objectif.nom }}"></i></a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        {% endif %}
+        {% endfor %}
+
+        {% endif %}
+        {% endfor %}
+
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    
+    <div class="row mt-4 px-3">
+        <div>
+            <a class="secondaire p-2" href="{{ path('titre_professionnel_index') }}">Retour à la liste des titres</a>
+        </div>
+        {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+        <div class="ml-auto">
+            <a class="secondaire p-2" href="{{ path('titre_pro_c_c_p_new', {'titre': titre_professionnel.id })}}">Ajouter un CCP</a>
+        </div>
+        <div class="ml-auto">
+            <a class="secondaire p-2" href="{{ path('titre_professionnel_edit', {'id': titre_professionnel.id}) }}">Modifier le titre professionnel</a>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('formateur_delete', {'session': session.id, 'former': former.id } ) }}" onsubmit="return confirm('Etes-vous sûr de vouloir supprimer ce formateur ?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ former.id) }}">
+    <button id="supp_stagiaire" type="submit" title="Supprimer le formateur de la session"><i class="far fa-trash-alt"></i></button>
+</form>

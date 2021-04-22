@@ -1,0 +1,68 @@
+/*Attention : cette page css utilise des variables, pour les navigateurs non compatible ne pas oublier de rajouter le format standart en plus des var()*/
+
+:root {
+    --couleurPrimaire: #FFD715;
+}
+
+a {
+    color: inherit;
+}
+
+.titre_pro_titre {
+    border: 1px black solid;
+    height: 40px;
+    width: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.titre_pro_ccp {
+    background-color: #FFD715;
+    background-color: var(--couleurPrimaire);
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 2px;
+    padding: 4px;
+}
+
+.titre_pro_competence {
+    background-color: grey;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin: 2px;
+    padding: 4px;
+}
+
+.titre_pro_module {
+    background-color: #a8a8a8;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 2px;
+    padding: 4px;
+}
+
+.titre_pro_objectif {
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin: 2px;
+    border: grey solid 1px;
+}
+
+@media only screen and (max-width: 767px), (min-device-width: 768px) and (max-device-width: 1024px) {
+    .titre_pro_titre {
+        background-color: #FFD715;
+        background-color: var(--couleurPrimaire);
+        height: 110px;
+        width: auto;
+        display: flex;
+        justify-content: space-between;
+    }
+}

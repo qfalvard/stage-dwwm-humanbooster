@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une adresse{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1 class="text-center">Modifier une adresse</h1>
+    <div class="row px-3">
+        <div class="ml-auto">
+            {{ include('adresse/_delete_form.html.twig') }}
+        </div>
+    </div>
+    {{ include('adresse/_form.html.twig', {'button_label': 'Update'}) }}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<!-- Va savoir pourquoi, cette ligne est nécessaire, même si elle est dans le base.html.twig ! -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script> 
+
+<script>
+	$('select').select2({
+    theme: 'bootstrap4',
+});
+</script>
+{% endblock %}

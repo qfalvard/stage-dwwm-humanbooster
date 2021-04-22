@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Enregistrement{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Nouvel utilisateur</h1>
+
+    {{ form_start(utilisateurForm) }}
+        {{ form_row(utilisateurForm.prenom, { 'label': 'Prénom' }) }}
+        {{ form_row(utilisateurForm.nom) }}
+        {{ form_row(utilisateurForm.email) }}
+        {{ form_row(utilisateurForm.roles) }}
+
+        <div class="row px-3">
+            <div class="mt-3">
+                <a class="secondaire p-2" href="{{ path('utilisateurs_index') }}">Retour à la liste des Utilisateur</a>
+            </div>
+            <div class="ml-auto">
+                <button class="primaire">Valider</button>
+            </div>
+        </div>
+    {{ form_end(utilisateurForm) }}
+</div>
+{% endblock %}

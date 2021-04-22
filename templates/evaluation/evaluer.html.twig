@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Évaluation{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Evaluation du stagiaire sur le module {{module.nom}}</h1>
+    <form method="post" class="row">
+        <div class="col-12 text-center mb-3 form-group">
+            <h3>Choisissez un stagiaire</h3>
+            <select class="form-control custom-select mx-auto" required name="id_user">
+                <option value="-1">Stagiaire à évaluer</option>
+                {% for stagiaire in stagiaires %}
+                <option value="{{ stagiaire.id }}">{{ stagiaire.nom|upper }} {{ stagiaire.prenom }} -
+                    {{ stagiaire.email }}</option>
+                {% else %}
+                <p>Aucun utilisateur inscrit</p>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-12">
+            <div class="text-center">
+                <h3>Entrez les évaluations pour chaque objectif</h3>
+                <table>
+                    <thead>
+                        <th>Objectif</th>
+                        <th>Date de l’évaluation</th>
+                        <th>Niveau d’acquisition</th>
+                        <th>Commentaire (obligatoire)</th>
+                    </thead>
+                    <tbody>
+                        <!-- Pour i commençant à 1, sur la longueur de la boucle.
+                            Commence à index 0 du tableau d'objectifs -->
+                        {% for i in 0..objectifs | length - 1 %}
+                        {{ dump(objectifs[i]) }}
+                        <tr class="form-group">
+                            <input type="hidden" name="objectif{{i}}" value="{{ objectifs[i].id }}">
+                            <td>
+                                {{ objectifs[i].nom }}
+                            </td>
+                            <td>
+                                <input class="form-control" type="date" name="date{{i}}" id="date"
+                                    value='{{ date() | date("Y-m-d")}}'>
+                            </td>
+                            <td>
+                                <select class="form-control" name="aquisition{{i}}" id="acquisition">
+                                    <option value="-1" selected="selected">Niveau d’acquisition</option>
+                                    <option value="5">Non-acquis</option>
+                                    <option value="10">En cours d’acquisition</option>
+                                    <option value="15">Acquis</option>
+                                </select>
+                            </td>
+                            <td>
+                                <textarea class="form-control" required name="commentaire{{i}}" id="commentaire"
+                                    placeholder="commentaire"></textarea>
+                            </td>
+                        </tr>
+
+            </div>
+            {% endfor %}
+            </tbody>
+
+            </table>
+
+        </div>
+
+</div>
+<div class="row px-4 mt-3 ml-auto">
+    <input class="primaire" type="submit" value="Evaluer le stagiaire">
+</div>
+</form>
+
+
+</div>
+{% endblock %}

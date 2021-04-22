@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CCP{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>CCP n°{{ c_c_p.id }}</h1>
+    <div class="row px-3 mb-3">
+        <div class="ml-auto">
+            {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                {{ include('ccp/_delete_form.html.twig') }}
+            {% endif %}
+        </div>
+    </div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Nom</th>
+                <td>{{ c_c_p.nom }}</td>
+            </tr>
+            <tr>
+                <th>IsTranverse</th>
+                <td>{{ c_c_p.isTranverse ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row px-3">
+        <div class="mt-3">
+           <a class="secondaire p-2" href="{{ path('c_c_p_index') }}">Retour à la liste des CCP</a>
+        </div>
+        {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+        <div class="ml-auto">
+            <a href="{{ path('c_c_p_edit', {'id': c_c_p.id}) }}"><button class="primaire">Modifier</button></a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

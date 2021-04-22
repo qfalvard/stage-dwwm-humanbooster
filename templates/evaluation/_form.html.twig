@@ -1,0 +1,68 @@
+{{ form_start(form) }}
+<div class="d-flex justify-content-around">
+    <div class="encadre" style="width: 200px;">
+        <div class="row">
+            <div class="col-4">
+
+                {% for user in users %}
+                {% for role in user.roles %}
+                {% if role == "ROLE_STAGIAIRE" %}
+                <a href="#">{{user.nom}}</a>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="encadre">
+
+        <div class="border border-dark my-3">
+            <div class=" d-flex justify-content-center mt-4">
+                <div class="col-4 my-3">
+                    {{ form_row(form.Module) }}
+
+                </div>
+
+                <div class="col-5 my-3">
+                    {{ form_row(form.Objectif) }}
+                </div>
+
+                <div class="col-3 my-3">
+                    {{ form_row(form.date) }}
+                </div>
+
+            </div>
+
+            <div class="border border-dark mt-5 mb-5 ml-2 mr-2">
+                <div class="d-flex justify-content-center mt-3">
+
+                    <div class="col-2">
+
+                        {{ form_row(form.Utilisateur) }}
+
+                    </div>
+
+                    <div class="col-5">
+                        {{ form_row(form.niveauAcquisition) }}
+                    </div>
+
+                    <div class="col-5">
+                        {{ form_row(form.commentaire) }}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {# {% if evaluation.Utilisateur == evaluation.niveauAcquisition < 15 or null %}
+<p>Ce stagiaire n'à pas eu le niveau aquis à cette évaluation</p>
+
+{% elseif evaluation.Utilisateur == evaluation.niveauAcquisition == 15 %}
+
+<p>Ce stagiaire à eu le niveau aquis à cette évaluation</p>
+
+{% endif %} #}
+</div>
+<button class="btn">{{ button_label|default('Valider') }}</button>
+{{ form_end(form) }}

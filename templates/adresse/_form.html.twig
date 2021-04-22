@@ -1,0 +1,17 @@
+    {{ form_start(form) }}
+        {{ form_row(form.ligne1, { 'label': 'Ligne 1 (ex : Campus Région)' }) }}
+        {{ form_row(form.ligne2, { 'label': 'Ligne 2 (ex : 1 place de la mairie)' }) }}
+        {{ form_row(form.ligne3, { 'label': 'Ligne 3 (ex : bâtiment A)' }) }}
+        {{ form_row(form.cp, { 'label': 'Code postal' }) }}
+
+        {{ form_row(form.commune, { 'label': 'Commune' }) }}
+
+        <div class="row px-3">
+            <div class="mt-3">
+                <a class="secondaire p-2" href="{{ path('adresse_index') }}">Retour à la liste des adresses</a>
+            </div>
+            <div class="ml-auto">
+                <button class="primaire text-center" type="submit">Valider</button>
+            </div>
+        </div>
+    {{ form_end(form) }}

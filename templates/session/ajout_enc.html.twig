@@ -1,0 +1,35 @@
+<div class="text-center my-3">
+    <h3>Ajout d'encadrant(s)</h3>
+</div>
+
+<form action="{{ path('session_ajout_encadrant', { 'id': session.id }) }}" method="POST">
+    <div class="row">
+        {% for i in 1..3 %}
+        <div class="mb-3 input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="ordre{{i}}">Poste d'encadrement</label>
+            </div>
+            <select class="custom-select mr-1" name="ordre{{i}}" id="ordre{{i}}">
+                <option value="1">Chef de projet</option>
+                <option value="2">Adjoint de gestion et projets</option>
+                <option value="3">Responsable qualité</option>
+            </select>
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="encadrant{{i}}">Encadrant</label>
+            </div>
+            <select class="custom-select" name="encadrant{{i}}" id="encadrant{{i}}">
+                <option value="">Veuillez choisir un encadrant...</option>
+                {% for encadrant in encadrants %}
+                <option value="{{encadrant.id}}">{{ encadrant.nom|upper }} {{ encadrant.prenom }} -
+                    {{ encadrant.email }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center">
+        <button class="primaire">Valider</button>
+    </div>
+</form>
+</div>

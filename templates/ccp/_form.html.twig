@@ -1,0 +1,13 @@
+{{ form_start(form) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.isTranverse, { 'label': 'CCP transverse' }) }}
+    {{ form_row(form.ordreAffichage) }}
+    <div class="row px-3">
+        <div class="mt-3">
+            <a class="secondaire p-2" href="{{ path('titre_professionnel_show', {'id': titre.id}) }}">Retour au titre professionnel</a>
+        </div>
+        <div class="ml-auto">
+            <button class="primaire">Valider</button>
+        </div>
+    </div>
+{{ form_end(form) }}

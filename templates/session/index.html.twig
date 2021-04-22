@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Session index{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Liste des sessions</h1>
+
+    <table class="table session">
+        <thead>
+            <tr>
+                <th>Intitulé</th>
+                <th class="text-center">Date Début</th>
+                <th class="text-center">Date Fin</th>
+                <th class="text-center">Statut</th>
+                <th>Titre professionnel</th>
+                <th class="text-center">Commune</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in sessions %}
+                {#Si le L'utilisateur est stagiaire#}
+                {% if app.user.roles[0] == "ROLE_STAGIAIRE" %}
+                    {#Pour chaque parmis les stagiaires de la formation#}
+                    {% for stagiaire in session.stagiaires %}
+                        {#On vérifie si l'utilisateur stagiaire connecté correspond à un stagiaire de la formation#}
+                        {% if stagiaire.id == app.user.id %}
+                            <tr>
+                                <td>{{ session.intitule }}</td>
+                                <td class="text-center">{{ session.dateDebut ? session.dateDebut|date('d/m/Y') : '' }}</td>
+                                <td class="text-center">{{ session.dateFin ? session.dateFin|date('d/m/Y') : '' }}</td>
+                                <td class="text-center">{{ session.isActif ? 'Active' : 'Non active' }}</td>
+                                <td>{{ session.titreProfessionnel.nom }} ({{ session.titreProfessionnel.dateApplication ? session.titreProfessionnel.dateApplication|date('d/m/Y') : ''}})</td>
+                                
+                                {% if session.adresse is defined %}
+                                <td class="text-center">{{ session.adresse.commune.nom }}</td>
+                                {% else %}
+                                <td></td>
+                                {% endif %}
+                                <td class="text-center">
+                                    <a href="{{ path('session_show', {'id': session.id}) }}"><i class="far fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                
+                {#Si le L'utilisateur est formateur#}
+                {% if app.user.roles[0] == "ROLE_FORMATEUR_TRE" %}
+                    {#Pour chaque parmis les stagiaires de la formation#}
+                    {% for former in session.formers %}
+                        {#On vérifie si l'utilisateur stagiaire connecté correspond à un stagiaire de la formation#}
+                        {% if former.formateur.id == app.user.id %}
+                            <tr>
+                                <td>{{ session.intitule }}</td>
+                                <td class="text-center">{{ session.dateDebut ? session.dateDebut|date('d/m/Y') : '' }}</td>
+                                <td class="text-center">{{ session.dateFin ? session.dateFin|date('d/m/Y') : '' }}</td>
+                                <td class="text-center">{{ session.isActif ? 'Active' : 'Non active' }}</td>
+                                <td>{{ session.titreProfessionnel.nom }} ({{ session.titreProfessionnel.dateApplication ? session.titreProfessionnel.dateApplication|date('d/m/Y') : ''}})</td>
+                        
+                                {% if session.adresse is defined %}
+                                <td class="text-center">{{ session.adresse.commune.nom }}</td>
+                                {% else %}
+                                <td></td>
+                                {% endif %}
+                                <td class="text-center">
+                                    <a href="{{ path('session_show', {'id': session.id}) }}"><i class="far fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                
+                {#Si le L'utilisateur est formateur#}
+                {% if app.user.roles[0] == "ROLE_FORMATEUR" %}
+                    {#Pour chaque parmis les stagiaires de la formation#}
+                    {% for former in session.formers %}
+                        {#On vérifie si l'utilisateur stagiaire connecté correspond à un stagiaire de la formation#}
+                        {% if former.formateur.id == app.user.id %}
+                            <tr>
+                                <td>{{ session.intitule }}</td>
+                                <td class="text-center">{{ session.dateDebut ? session.dateDebut|date('d/m/Y') : '' }}</td>
+                                <td class="text-center">{{ session.dateFin ? session.dateFin|date('d/m/Y') : '' }}</td>
+                                <td class="text-center">{{ session.isActif ? 'Active' : 'Non active' }}</td>
+                                <td>{{ session.titreProfessionnel.nom }} ({{ session.titreProfessionnel.dateApplication ? session.titreProfessionnel.dateApplication|date('d/m/Y') : ''}})</td>
+                                
+                                {% if session.adresse is defined %}
+                                <td class="text-center">{{ session.adresse.commune.nom }}</td>
+                                {% else %}
+                                <td></td>
+                                {% endif %}
+                                <td class="text-center">
+                                    <a href="{{ path('session_show', {'id': session.id}) }}"><i class="far fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %} 
+
+                {#Si le L'utilisateur est encadrant#}
+                {% if app.user.roles[0] == "ROLE_ENCADRANT" %}
+                            <tr>
+                                <td>{{ session.intitule }}</td>
+                                <td class="text-center">{{ session.dateDebut ? session.dateDebut|date('d/m/Y') : '' }}</td>
+                                <td class="text-center">{{ session.dateFin ? session.dateFin|date('d/m/Y') : '' }}</td>
+                                <td class="text-center">{{ session.isActif ? '<i class="fas fa-circle actf"></i>' : '<i class="fas fa-circle inctf">' }}</td>
+                                <td>{{ session.titreProfessionnel.nom }} ({{ session.titreProfessionnel.dateApplication ? session.titreProfessionnel.dateApplication|date('d/m/Y') : ''}})</td>
+                                
+                                {% if session.adresse is defined %}
+                                <td class="text-center">{{ session.adresse.commune.nom }}</td>
+                                {% else %}
+                                <td></td>
+                                {% endif %}
+                                <td class="text-center">
+                                    <a href="{{ path('session_show', {'id': session.id}) }}" title="Voir la session : {{session.intitule}}"><i class="far fa-eye"></i></a>
+                                </td>
+                            </tr>
+                {% endif %} 
+
+            {% else %}
+            <tr>
+                <td colspan="9">Pas d'enregistrements</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+        <div class="row px-3">
+            <div class="ml-auto">
+                <a href="{{ path('session_new') }}"><button class="primaire">Créer une nouvelle session</button></a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

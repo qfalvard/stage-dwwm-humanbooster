@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier cette utilisateur{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1 class="text-center">Modification de l'utilisateur</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <div class="row px-3">
+        <div>
+            <a href="{{ path('app_generate_new_token', {'id': user.id}) }}"><button class="secondaire">Envoyer un nouveau mail activation</button></a>
+        </div>
+        <div class="ml-auto">
+            <button class="primaire">{{ button_label|default('Valider') }}</button>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+<div class="text-center mt-5">
+	<h3>Ajout de stagiaire(s)</h3>
+</div>
+
+<div class="d-flex justify-content-center">
+	<div class="card-body">
+		<form action="{{ path('session_ajout_stagiaire', { 'id': session.id }) }}" method="post"
+			class="d-flex flex-column">
+			<div class="row">
+				<div class="col-6">
+					{% for i in 1..5 %}
+					<div class="my-3 input-group">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="stagiaire{{i}}">{{i}}.</label>
+						</div>
+						<select class="custom-select" type="stagiaire{{i}}" name="stagiaire{{i}}" id="stagiaire{{i}}">
+							<option selected>Choisissez ici...</option>
+							{% for stagiaire in stagiaires %}
+							<option value="{{ stagiaire.id }}">{{ stagiaire.nom|upper }} {{ stagiaire.prenom }} -
+								{{ stagiaire.email }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div class="col-6">
+					{% for i in 6..10 %}
+					<div class="my-3 input-group">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="stagiaire{{i}}">{{i}}.</label>
+						</div>
+						<select class="custom-select" type="stagiaire{{i}}" name="stagiaire{{i}}" id="stagiaire{{i}}">
+							<option selected>Choisissez ici...</option>
+							{% for stagiaire in stagiaires %}
+							<option value="{{ stagiaire.id }}">{{ stagiaire.nom|upper }} {{ stagiaire.prenom }} -
+								{{ stagiaire.email }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="text-center mt-5">
+				<button class="primaire">Valider</button>
+			</div>
+
+		</form>
+	</div>
+
+</div>
+
+</div>

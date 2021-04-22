@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<section class="row">
+    <article class="col-lg-8">
+        <div class="encadre">
+            <h1>{{app.user.nom}} {{app.user.prenom}}</h1>
+            <div class="bloctxt my-3">
+                <p>Attribution : {{app.user.roles[0]}}</p>
+                <p>Email de l'Utilisateur : {{app.user.email}}</p>
+                {% if app.user.isActif == true %}
+                Utilisateur actif
+                {% else %}
+                Utilisateur inactif
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="encadre">
+            <h1>Formations</h1>
+            {#Pour chaque formation#}
+            {% for session in sessions %}
+            {#Si le L'utilisateur est stagiaire#}
+            {% if "ROLE_STAGIAIRE" in app.user.roles %}
+                {#Pour chaque parmis les stagiaires de la formation#}
+                {% for stagiaire in session.stagiaires %}
+                {#On vérifie si l'utilisateur stagiaire connecté correspond à un stagiaire de la formation#}
+                    {% if stagiaire.id == app.user.id %}
+                    {#Si c'est le cas et que la session est encore active#}
+                        {% if session.isActif == true %}
+                        {#alors on affiche ces formations#}
+                        <h4>Stagiaire :</h4>
+                        <div class="bloctxt my-3">
+                            <p><i class="fas fa-circle actf"></i><b> <i>&nbsp;&nbsp;&nbsp;</i> {{ session.intitule }} - Lieu -
+                                    {{ session.dateDebut|date("d/m/Y") }} - {{ session.dateFin|date("d/m/Y") }} - <a
+                                        href="{{ path('session_show', {'id': session.id}) }}" title="Voir la session : {{session.intitule}}"><i class="far fa-eye"></i></a></b></p>
+                            {% else %}
+                            <p><i class="fas fa-circle inctf"></i><b> <i>&nbsp;&nbsp;&nbsp;</i> {{ session.intitule }} - Lieu -
+                                    {{ session.dateDebut|date("d/m/Y") }} - {{ session.dateFin|date("d/m/Y") }} - <a
+                                        href="{{ path('session_show', {'id': session.id}) }}" title="Voir la session : {{session.intitule}}"><i class="far fa-eye"></i></a></b></p>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {% if "ROLE_FORMATEUR" in app.user.roles or "ROLE_FORMATEUR_TRE" in app.user.roles %}
+                {#Pour chaque parmis les stagiaires de la formation#}
+                {% for former in session.formers %}
+                    {#On vérifie si l'utilisateur stagiaire connecté correspond à un stagiaire de la formation#}
+                    {% if former.id == app.user.id %}
+                        {#Si c'est le cas et que la session est encore active#}
+                        {% if session.isActif == true %}
+                            {#alors on affiche ces formations#}
+                            <h4>Formateur :</h4>
+                            <div class="bloctxt my-3">
+                                <p><i class="fas fa-circle actf"></i><b> <i>&nbsp;&nbsp;&nbsp;</i> {{ session.intitule }} - Lieu -
+                                        {{ session.dateDebut|date("d/m/Y") }} - {{ session.dateFin|date("d/m/Y") }} - <a
+                                            href="{{ path('session_show', {'id': session.id}) }}" title="Voir la session : {{session.intitule}}"><i class="far fa-eye"></i></a></b></p>
+                                {% else %}
+                                <p><i class="fas fa-circle inctf"></i><b> <i>&nbsp;&nbsp;&nbsp;</i> {{ session.intitule }} - Lieu -
+                                        {{ session.dateDebut|date("d/m/Y") }} - {{ session.dateFin|date("d/m/Y") }} - <a
+                                            href="{{ path('session_show', {'id': session.id}) }}" title="Voir la session : {{session.intitule}}"><i class="far fa-eye"></i></a></b></p>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if "ROLE_ENCADRANT" in app.user.roles %}
+                {% if session.isActif == true %}
+                    {#alors on affiche ces formations#}
+                    <h4>Encadrant :</h4>
+                    <div class="bloctxt my-3">
+                        <p><i class="fas fa-circle actf"></i><b> <i>&nbsp;&nbsp;&nbsp;</i> {{ session.intitule }} - Lieu -
+                                {{ session.dateDebut|date("d/m/Y") }} - {{ session.dateFin|date("d/m/Y") }} -
+                                <a href="{{ path('session_show', {'id': session.id}) }}" title="Voir la session : {{session.intitule}}"><i class="far fa-eye"></i></a></b></p>
+                        {% else %}
+                        <p><i class="fas fa-circle inctf"></i><b> <i>&nbsp;&nbsp;&nbsp;</i> {{ session.intitule }} - Lieu -
+                                {{ session.dateDebut|date("d/m/Y") }} - {{ session.dateFin|date("d/m/Y") }} -
+                                <a href="{{ path('session_show', {'id': session.id}) }}" title="Voir la session : {{session.intitule}}"><i class="far fa-eye"></i></a></b></p>
+                    </div>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        </div>
+    </article>
+
+    <article class="col-lg-4">
+        <div class="encadre">
+            <h1>
+                Vous avez les attributions
+                {% if app.user.roles[0] == "ROLE_ENCADRANT" %}
+                d'encadrant
+                {% elseif app.user.roles[0] == "ROLE_FORMATEUR" %}
+                de formateur
+                {% elseif app.user.roles[0] == "ROLE_FORMATEUR_TRE" %}
+                de formateur TRE
+                {% elseif app.user.roles[0] == "ROLE_STAGIAIRE" %}
+                de stagiaire
+                {% endif %}
+            </h1>
+            <p>Vous avez donc accès via la navbar à :</p>
+            <ul>
+                {% if app.user.roles[0] == "ROLE_ENCADRANT" %}
+                <li>Toutes les pages</li>
+                <li>Toutes les fonctionnalités de modication de la base de donnée</li>
+                {% endif %}
+                {% if app.user.roles[0] == "ROLE_FORMATEUR" %}
+                <li>Toutes les pages sauf celles concernant les stages</li>
+                <li>Aucune fonction de modification</li>
+                {% endif %}
+                {% if app.user.roles[0] == "ROLE_FORMATEUR_TRE" %}
+                <li>Toutes les pages, dont celles des stages</li>
+                <li>Aucune fonction de modification</li>
+                {% endif %}
+                {% if app.user.roles[0] == "ROLE_STAGIAIRE" %}
+                <li>Toute les informations sur les titres professionnels</li>
+                {% endif %}
+            </ul>
+        </div>
+    </article>
+</section>
+{% endblock %}

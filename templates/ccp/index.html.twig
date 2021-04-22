@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CCP index{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Liste des CCP</h1>
+
+    <table class="table ccp">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th class="text-center">IsTranverse</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c_c_p in c_c_ps %}
+            <tr>
+                <td>{{ c_c_p.nom }}</td>
+                <td class="text-center">{{ c_c_p.isTranverse ? 'Yes' : 'No' }}</td>
+                <td class="text-center">
+                    <a href="{{ path('c_c_p_show', {'id': c_c_p.id}) }}" title="Voir le CCP : {{c_c_p.nom}}"><i class="far fa-eye"></i></a>
+                    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                    <a href="{{ path('c_c_p_edit', {'id': c_c_p.id}) }}" title="Modifier le CCP : {{c_c_p.nom}}"><i class="far fa-edit"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">Il n'y a pas de CCP, veulliez en saisir un.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+    <div class="row">
+        <div class="ml-auto px-3">
+            <a href="{{ path('c_c_p_new') }}"><button class="primaire">Ajouter un CCP</button></a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

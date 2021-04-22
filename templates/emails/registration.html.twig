@@ -1,0 +1,11 @@
+<h3>Création de votre compte</h3>
+
+<p>Bonjour {{ email }}, votre compte a bien été créé mais nécessite une activation de votre part.</p>
+
+{# <p>Merci de cliquer sur le lien suivant : <a href src="http://localhost:8000/confirm_account/{{token}}/{{email}}">http://localhost:8000/confirm_account/{{token}}/{{email}}</a>.</p> #}
+
+<p>Merci de cliquer sur le lien suivant : <a href="{{url}}">{{url}}</a></p>
+
+<p>Ce lien expirera dans {{ delaiExpiration }} jours.</p>
+
+<p><img src="{{ absolute_url(asset('build/img/logo.jpg')) }}"></P>

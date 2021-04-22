@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suivi du stage{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Suivi du stage de {{utilisateur.id}}</h1>
+    <h2>Recherche de stage</h2>
+
+
+    <h2>Informations de l'entreprise d'accueil</h2>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Nom de l'entreprise</th>
+                <td>{{ entreprise.nom }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ adresse.ligne1 }}</td>
+                <td>{{ adresse.ligne2 }}</td>
+                <td>{{ adresse.ligne3 }}</td>
+                <td>{{ adresse.cp }}</td>
+                <td>{{ adresse.commune }}</td>
+            </tr>
+            <tr>
+                <th>Activité</th>
+                <td>{{ entreprise.activite }}</td>
+            </tr>
+            <tr>
+                <th>Tuteur</th>
+                <td>{{ stage.tuteur.nom }}</td>
+                <td>{{ entreprise.telephone }}</td>
+                <td>{{ recherche_stage.tuteur.email }}</td>
+            </tr>
+            <tr>
+                <th>Mission du stagiaire</th>
+                <td>{{ stage.mission}}</td>
+            </tr>
+           
+        </tbody>
+    </table>
+   
+    <h2>Entretien tuteur/stagiaire/formateur</h2>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Nom de l'entreprise</th>
+                <td>{{ entretien.date }}</td>
+                <td>{{ entretien.estPresentiel }}</td>
+                <td>{{entreprise.activite}}</td>
+                 <td>{{ actions.realisees }}</td>
+                  <td>{{ entretien.stagiairePointsForts }}</td>
+                  <td>{{ entretien.stagiairePointsAmelioration}}</td>
+                  <td>{{ entretien.tuteurPointsAmelioration}}</td>
+                  <td>{{ entretien.tuteurPointsAmelioration}}</td>
+    {% for eval in evaluationEntretien %}
+                   <td>{{eval.crittereEntretien.intitule}}<td>
+                    <td> {{eval.note}}<td>
+{% endfor %}
+                <td> {{ entretien.isEmbaucheEnvisagee}}</td>
+                 <td>  {{entretien.commentaireEmbauche}}</td>
+                  <td> {{entretien.commentaireGeneral}}</td>
+{% for cpd in comprendre %}
+                      <td>{{cpd.document.intitule}}<td>
+                    <td> {{cpd.avancee}}<td>
+                    <td> {{cpd.commentaire}}<td>
+                    {% endfor %}
+            </tr>
+          assiduité/ponctualité : note de 0 à 5
+autonomie: note de 0 à 5
+intégration à l’équipe de travail: note de 0 à 5
+capacité à demander de l’aide: note de 0 à 5
+curiosité: note de 0 à 5
+
+        </tbody>
+    </table>
+{% endblock %}

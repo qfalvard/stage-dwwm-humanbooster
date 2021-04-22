@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau mot de passe{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    {% if app.user.nom is defined %}
+    <div class="text-center">
+        <h2>Vous ne pouvez pas demander de nouveau mot de passe en étant connecté</h2>
+    </div>
+    {% else %}
+    <h1>Entrez un nouveau mot de passe :</h1>
+
+    <div class="d-flex justify-content-center">
+        <div class="card-body">
+            <form action="" method="post" class="d-flex flex-column">
+                <p>Les mots de passe doivent être identiques et contenir au minimum 8 charactères, une minuscule et une
+                    majuscule, et au moins un chiffre.</p>
+                <label for="password">Mot de passe</label>
+                <input class="form-control" type="password" name="password" id="password" placeholder="Choississez un mot de passe" required>
+
+                <label for="confirmation">Confirmation du mot de passe</label>
+                <input class="form-control" type="password" name="confirmation" id="confirmation" placeholder="Retapez le mot de passe"
+                    required>
+
+                <input type="hidden" name="token" value="{{ token }}">
+
+                <div class="text-center mt-5">
+                    <button class="primaire" type="submit">Valider</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}

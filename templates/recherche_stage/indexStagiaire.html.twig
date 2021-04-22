@@ -1,0 +1,211 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des suivis des recherches de stage
+{% endblock %}
+
+{% block body %}
+	<div class="row d-flex justify-content-around">
+
+		<div class="encadre col-2">
+			<div>
+
+				<a href="{{ path('entreprise_new' ,{'session_id':session_id}) }}">
+					<button class="secondaire">Ajouter Entreprise</button>
+				</a>
+			</div>
+			<h2>Liste des Entreprises</h2>
+
+			<div id="entreprise">
+
+				{% for entreprise in rechercheStageEntreprise2 %}
+					<div>
+						<a href="{{ path('recherche_stage_index', { 'entreprise_id': entreprise.entreprise_id,'session_id': session_id}) }}">{{ entreprise.nom|upper }}({{entreprise.NB}}recherche)</a>
+					</div>
+				{% endfor %}
+
+			</div>
+
+		</div>
+		<div class="encadre col-7">
+			<a href="{{ path('recherche_stage_new', {'user_id': app.user.id , 'session_id':session_id}) }}">
+				<button class="secondaire">Ajouter une recherche de stage</button>
+			</a>
+			<a href="{{ path('contact_new', {'session_id':session_id}) }}">
+				<button class="secondaire">Ajouter nouveau contact</button>
+			</a>
+			<h1>Suivi des recherches de stage</h1>
+			{% if entreprise_id is defined and ( date is not defined or date == 0 )%}
+				Date Ordre Croissant >  {{entreprise}} 
+			{% else %}
+				Date Ordre Décroissant >  {{entreprise}} 
+			{% endif %}
+
+			<table>
+				<thead>
+					<tr>
+						<th class="text-center">
+							{% if date == 0 %}
+								<a href="{{ path('recherche_stage_index', {'entreprise_id': entreprise_id , 'session_id':session_id , 'date':1}) }}">Date</a>
+							{% elseif date == 1 %}
+								<a href="{{ path('recherche_stage_index', {'entreprise_id': entreprise_id , 'session_id':session_id , 'date':0}) }}">Date</a>
+							{% endif %}
+						</th>
+						<th>Contact</th>
+						<th>Détails de l'action</th>
+						<th>Reponse de l'action</th>
+						<th class="text-center">Gestion</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if date == 1 %}
+						{% for recherche_stage in recherche_stages|sort((a, b) => b.date <=> a.date) %}
+
+							{% if not entreprise_id is null %}
+								{% if app.user.id == recherche_stage.utilisateur.id and recherche_stage.entreprise.id == entreprise_id %}
+									<tr>
+										<td class="text-center">{{ recherche_stage.date|date("d/m/Y") }}</td>
+										<td>
+											{{ recherche_stage.proContact }}
+										</td>
+
+										<td>
+											{{ recherche_stage.detail }}
+										</td>
+										<td>
+											{{ recherche_stage.reponse }}
+										</td>
+										<td class="text-center">
+											<a href="{{ path('recherche_stage_edit', {'id': recherche_stage.id , 'session_id':session_id}) }}" title="Modifier la recherche de stage">
+												<i class="far fa-edit"></i>
+											</a>
+										</td>
+									</tr>
+								{% endif %}
+							{% else %}
+								{% if app.user.id == recherche_stage.utilisateur.id %}
+									<tr>
+										<td class="text-center">{{ recherche_stage.date|date("d/m/Y") }}</td>
+										<td>
+											{{ recherche_stage.proContact }}
+										</td>
+
+										<td>
+											{{ recherche_stage.detail }}
+										</td>
+										<td>
+											{{ recherche_stage.reponse }}
+										</td>
+										<td class="text-center">
+											<a href="{{ path('recherche_stage_edit', {'id': recherche_stage.id , 'session_id':session_id}) }}" title="Modifier la recherche de stage">
+												<i class="far fa-edit"></i>
+											</a>
+										</td>
+									</tr>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% elseif date == 0 %}
+						{% for recherche_stage in recherche_stages|sort((a, b) => a.date <=> b.date) %}
+
+							{% if not entreprise_id is null %}
+								{% if app.user.id == recherche_stage.utilisateur.id and recherche_stage.entreprise.id == entreprise_id %}
+									<tr>
+										<td class="text-center">{{ recherche_stage.date|date("d/m/Y") }}</td>
+										<td>
+											{{ recherche_stage.proContact }}
+										</td>
+
+										<td>
+											{{ recherche_stage.detail }}
+										</td>
+										<td>
+											{{ recherche_stage.reponse }}
+										</td>
+										<td class="text-center">
+											<a href="{{ path('recherche_stage_edit', {'id': recherche_stage.id , 'session_id':session_id}) }}" title="Modifier la recherche de stage">
+												<i class="far fa-edit"></i>
+											</a>
+										</td>
+									</tr>
+								{% endif %}
+							{% else %}
+								{% if app.user.id == recherche_stage.utilisateur.id %}
+									<tr>
+										<td class="text-center">{{ recherche_stage.date|date("d/m/Y") }}</td>
+										<td>
+											{{ recherche_stage.proContact }}
+										</td>
+
+										<td>
+											{{ recherche_stage.detail }}
+										</td>
+										<td>
+											{{ recherche_stage.reponse }}
+										</td>
+										<td class="text-center">
+											<a href="{{ path('recherche_stage_edit', {'id': recherche_stage.id , 'session_id':session_id}) }}" title="Modifier la recherche de stage">
+												<i class="far fa-edit"></i>
+											</a>
+										</td>
+									</tr>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+					<tr>
+						<th colspan="5" class="text-center">commentaireTRE</th>
+					</tr>
+					{% if date == 1 %}
+						{% for recherche_stage in recherche_stages|sort((a, b) => b.date <=> a.date)%}
+							{% if app.user.id == recherche_stage.utilisateur.id and recherche_stage.entreprise.id == entreprise_id %}
+								<tr>
+									<td colspan="5" class="text-center">
+										{{ recherche_stage.commentaireStagiaire }}
+
+									</td>
+
+								</tr>
+							{% endif %}
+						{% endfor %}
+					{% elseif date == 0 %}
+						{% for recherche_stage in recherche_stages|sort((a, b) => a.date <=> b.date)%}
+							{% if app.user.id == recherche_stage.utilisateur.id and recherche_stage.entreprise.id == entreprise_id %}
+								<tr>
+									<td colspan="5" class="text-center">
+										{{ recherche_stage.commentaireStagiaire }}
+
+									</td>
+
+								</tr>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+					<tr>
+						<th colspan="5" class="text-center">commentaireHB</th>
+					</tr>
+					{% if date == 1 %}
+						{% for recherche_stage in recherche_stages|sort((a, b) => b.date <=> a.date) %}
+							{% if app.user.id == recherche_stage.utilisateur.id and recherche_stage.entreprise.id == entreprise_id %}
+								<tr>
+									<td colspan="5" class="text-center">
+										{{ recherche_stage.commentaireHB }}
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+					{% elseif date == 0 %}
+						{% for recherche_stage in recherche_stages|sort((a, b) => a.date <=> b.date) %}
+							{% if app.user.id == recherche_stage.utilisateur.id and recherche_stage.entreprise.id == entreprise_id %}
+								<tr>
+									<td colspan="5" class="text-center">
+										{{ recherche_stage.commentaireHB }}
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</tbody>
+			</tbody>
+		</table>
+	</div>
+</div>{% endblock %}

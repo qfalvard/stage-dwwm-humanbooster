@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des adresses{% endblock %}
+
+{% block body %}
+<div class="encadre text-center">
+    <h1>Liste des adresses</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ligne1</th>
+                <th>Adresse</th>
+                <th>Ville</th>
+                <th>Code Postal</th>
+                <th>Commune</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for adresse in adresses %}
+            <tr>
+                <td><a href="{{ path('adresse_edit', {'id': adresse.id}) }}">{{ adresse.ligne1 }}</a></td>
+                <td>{{ adresse.ligne2 }}</td>
+                <td>{{ adresse.ligne3 }}</td>
+                <td>{{ adresse.cp }}</td>
+                <td>{{ adresse.commune.nom|upper }}</td>
+                <td class="text-center">
+                    <a href="{{ path('adresse_edit', {'id': adresse.id}) }}" title="Modifier l'adresse : {{adresse.ligne2}}"><i class="far fa-edit"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Pas d'adresse enregistrée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="container row ml-auto">
+        <div class="ml-auto">
+            <a href="{{ path('adresse_new') }}"><button class="primaire">Ajouter une adresse</button></a>
+        </div>
+    </div>
+</div>
+{% endblock %}

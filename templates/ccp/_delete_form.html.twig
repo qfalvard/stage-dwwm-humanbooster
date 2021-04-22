@@ -1,0 +1,7 @@
+{% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+<form method="post" action="{{ path('c_c_p_delete', {'ccp': c_c_p.id, 'titre': titre.id }) }}" onsubmit="return confirm('Êtes-vous vraiment sur de vouloir supprimer ce CCP?');">
+<input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ c_c_p.id) }}">
+    <button class="btnSupprimer">Supprimer</button>
+</form>
+{% endif %}

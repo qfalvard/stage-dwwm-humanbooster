@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Module index{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Liste des modules</h1>
+
+    <table class="table mod">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th class="text-center">TRE</th>
+                <th class="text-center">Examen</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for module in modules %}
+            <tr>
+                <td>{{ module.nom }}</td>
+                <td class="text-center">{{ module.isTre ? 'Yes' : 'No' }}</td>
+                <td class="text-center">{{ module.examen ? 'Oui' : 'Non' }}</td>
+                <td class="text-center">
+                    <a href="{{ path('module_show', {'id': module.id}) }}" title="Voir le module : {{module.nom}}"><i class="far fa-eye"></i></a> 
+                    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %} 
+                    <a href="{{ path('module_edit', {'id': module.id}) }}" title="Modifier le module : {{module.nom}}"><i class="far fa-edit"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">Il n'y a pas de module, veuillez en saisir un.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+    <div class="row px-3">
+        <div class="ml-auto">
+            <a href="{{ path('module_new') }}"><button class="primaire">Ajouter un module</button></a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

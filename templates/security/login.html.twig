@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-center">
+    <!-- Material form login -->
+    <div class=" mt-5 card">
+
+        <h1 class="card-header info-color white-text text-center pb-0">
+            <p>HUMAN<strong>booster</strong></p>
+        </h1>
+
+        <!--Card content-->
+        <div class="card-body px-lg-2 pt-0 ">
+
+            <!-- Form -->
+            <form class="text-center" style="color: #c2c2c2;" method="post">
+                <h5 class="text-left text-dark pt-2">
+                    <p>Se Connecter</p>
+                </h5>
+                <!-- Email -->
+                <div class="text-left md-form">
+                <label class="text-dark" for="inputEmail">Utilisateur</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3 text-left md-form">
+                <label class="text-left text-dark pt-2" for="inputPassword">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" required>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                </div>
+                <div>
+                    <div class="text-left">
+                        <a class="text-decoration-none text-dark" href="{{ path ('app_oubli_mdp') }}"><ins>Vous avez oublié votre mot de passe ?</ins></a>
+
+                    </div>
+
+                </div>
+                <!-- Sign in button -->
+                <button class="btn btn-dark bg-dark text-light my-4 waves-effect z-depth-0"
+                    type="submit">Connexion</button>
+
+
+            </form>
+            <!-- Form -->
+
+        </div>
+
+    </div>
+    <!-- Material form login -->
+</div>
+
+
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adresse{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Adresse</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom de l'entreprise</th>
+                <th>activite</th>
+                <th>Raison Social</th>
+                <th>telephone</th>
+                <th>email</th>
+                <th>adresse</th>
+                <th>code Postal</th>
+                <th>commune</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td>{{ entreprise.nom }}</a></td>
+                <td>{{ entreprise.activite }}</td>
+                <td>{{ entreprise.raisonSocial }}</td>
+                <td>{{ entreprise.telephone }}</td>
+                <td>{{ entreprise.email }}</td>
+                <td>{{ entreprise.adresse.ligne1 }} {{ entreprise.adresse.ligne2 }} {{ entreprise.adresse.ligne3 }}</td>
+                <td>{{ entreprise.adresse.cp }}</td>
+                <td>{{ entreprise.adresse.commune.nom|upper }}</td>
+                 <td>
+                    <a href="{{ path('entreprise_edit', {'id': entreprise.id}) }}"><i class="far fa-edit"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="container container-fluid row">
+        <div class="col-md-3 mt-2">
+            <a href="{{ path('entreprise_index') }}">Retour à la liste d'entreprise</a>
+        </div>
+        <div class="col-md-3 ml-auto">
+            {{ include('entreprise/_delete_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{% endblock %}

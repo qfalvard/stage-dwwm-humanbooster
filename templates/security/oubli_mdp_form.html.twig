@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublié?{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Mot de passe oublié?</h1>
+
+    {% if app.user.nom is defined %}
+        <div class="text-center">
+            <h2>Vous ne pouvez pas demander de nouveau mot de passe en étant connecté</h2>
+        </div>
+        {% else %}
+        {{ form_start(oubliForm) }}
+            {{ form_row(oubliForm.email) }}
+            <div class="text-center mt-5">
+                <button class="primaire" type="submit">Valider</button>
+            </div>
+        {{ form_end(oubliForm) }}
+    {% endif %}
+</div>
+
+{% endblock %}

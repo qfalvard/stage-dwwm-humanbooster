@@ -1,0 +1,53 @@
+<div class="text-center">
+	<h3>Ajout de formateur(s)</h3>
+</div>
+
+<form action="{{ path('session_ajout_formateur', { 'id': session.id }) }}" method="POST">
+	<table class="table table-borderless">
+		<thead>
+			<tr class="bg-transparent">
+				<th class="" scope="col">Module</th>
+				<th class="" scope="col">Formateur</th>
+				<th class="text-center" scope="col">Date de fin d'intervention</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for module in modules %}
+			<tr class="bg-transparent">
+				<th scope="row">
+					{{module.nom}}
+				</th>
+				<td class="text-center">
+					<select class="custom-select" name="formateur{{module.id}}" id="formateur{{module.id}}" style="width: 300px;">Choisissez
+						ici...
+						<option value=""></option>
+						{% for formateur in formateurs %}
+						<option value="{{formateur.id}}">{{ formateur.nom|upper }} {{ formateur.prenom }} -
+							{{ formateur.email }}</option>
+						{% endfor %}
+					</select>
+				</td>
+				<td class="text-center">
+					<input class="py-2 px-3" type="date" name="datetime{{module.id}}" id="datetime{{module.id}}"
+						value="{{"now"|date("Y-m-d")}}">
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<div class="text-center">
+		<button class="primaire">Valider</button>
+	</div>
+</form>
+
+{% block javascripts %}
+<!-- Va savoir pourquoi, cette ligne est nécessaire, même si elle est dans le base.html.twig ! -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+<script>
+	$('select').select2({
+		theme: 'bootstrap4',
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit TitreProfessionnel{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    
+    <h1>Modifier le Titre Professionnel</h1>
+    <div class="row px-3">
+        <div class="ml-auto">
+            {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                {{ include('titre_professionnel/_delete_form.html.twig') }}
+            {% endif %}
+        </div>
+    </div>
+    {{ include('titre_professionnel/_form.html.twig', {'button_label': 'Valider'}) }}
+
+</div>
+{% endblock %}

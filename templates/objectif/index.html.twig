@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Objectif index{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Liste des Objectifs</h1>
+
+    <table class="table obj">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for objectif in objectifs %}
+            <tr>
+                <td>{{ objectif.nom }}</td>
+                <td class="text-center">
+                    <a href="{{ path('objectif_show', {'id': objectif.id}) }}" title="Voir l'objectif : {{objectif.nom}}"><i class="far fa-eye"></i></a> 
+                    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                    <a href="{{ path('objectif_edit', {'id': objectif.id}) }}" title="Modifier l'objectif : {{objectif.nom}}"><i class="far fa-edit"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">Il n'y a pas d'objectif, veuillez en saisir un.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+    <div class="row px-3">
+        <div class="ml-auto">
+            <a href="{{ path('objectif_new') }}"><button class="primaire">Ajouter un objectif</button></a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

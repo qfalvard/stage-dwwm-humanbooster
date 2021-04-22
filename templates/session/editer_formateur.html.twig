@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un formateur{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Modifier un formateur</h1>
+
+    <form action="" method="POST">
+        <div class="mx-auto d-flex flex-column" style="width: 800px;">
+            <div class="my-3 input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="formateur">{{former.module.nom}}</label>
+                </div>
+                <select class="custom-select" name="formateur" id="formateur">
+                    {% for formateur in formateurs %}
+                    {#
+                    {% set selected = '' %}
+                    {% if formateur.id == former.formateur.id  %}
+                        {% set selected = 'selected' %}
+                    {% endif %}
+                    #}
+                    <option {% if formateur.id == former.formateur.id %} {#{{selected}}#} selected="selected"
+                        {% endif %} value="{{formateur.id}}">{{formateur.nom|upper}} {{formateur.prenom}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="my-3 input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="datetime">Date de fin d'intervention</label>
+                </div>
+                <input class="custom-select" type="date" name="datetime" id="datetime"
+                    value="{{former.dateFin | date("Y-m-d")}}">
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button class="primaire">Valider</button>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<!-- Va savoir pourquoi, cette ligne est nécessaire, même si elle est dans le base.html.twig ! -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script> 
+
+<script>
+	$('select').select2({
+    theme: 'bootstrap4',
+});
+</script>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout stagiaire(s){% endblock %}
+
+{% block body %}
+<div class="encadre">
+	<div class="text-center mb-3">
+		<h1>Ajout de stagiaire(s)</h1>
+	</div>
+
+	<div class="d-flex justify-content-center">
+
+		<div class="card-body">
+			<form action="" method="post" class="d-flex flex-column">
+				<div class="row">
+
+					<div class="col-6">
+						{% for i in 1..5 %}
+						<div class="my-3 input-group">
+							<div class="input-group-prepend">
+								<label class="input-group-text" for="stagiaire{{i}}">{{i}}.</label>
+							</div>
+							<select class="custom-select" type="stagiaire{{i}}" name="stagiaire{{i}}"
+								id="stagiaire{{i}}">
+								<option selected>Choisissez ici...</option>
+								{% for stagiaire in stagiaires %}
+								<option value="{{ stagiaire.id }}">{{ stagiaire.nom|upper }} {{ stagiaire.prenom }} - {{ stagiaire.email }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						{% endfor %}
+					</div>
+
+					<div class="col-6">
+						{% for i in 6..10 %}
+						<div class="my-3 input-group">
+							<div class="input-group-prepend">
+								<label class="input-group-text" for="stagiaire{{i}}">{{i}}.</label>
+							</div>
+							<select class="custom-select" type="stagiaire{{i}}" name="stagiaire{{i}}"
+								id="stagiaire{{i}}">
+								<option selected>Choisissez ici...</option>
+								{% for stagiaire in stagiaires %}
+								<option value="{{ stagiaire.id }}">{{ stagiaire.nom|upper }} {{ stagiaire.prenom }} - {{ stagiaire.email }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="row px-3">
+					<div class="mt-3">
+						<a class="secondaire p-2" href="{{ path('session_show', { 'id': session.id }) }}">Retour à la liste des sessions</a>
+					</div>
+					<div class="ml-auto">
+						<button class="primaire" type="submit">Valider</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</div>
+	<div class="d-flex justify-content-end">
+		
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+<!-- Va savoir pourquoi, cette ligne est nécessaire, même si elle est dans le base.html.twig ! -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script> 
+
+<script>
+	$('select').select2({
+    theme: 'bootstrap4',
+});
+</script>
+{% endblock %}

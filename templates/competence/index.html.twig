@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Competence index{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Liste des Competences</h1>
+    <table class="table comp">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for competence in competences %}
+            <tr>
+                <td>{{ competence.nom }}</td>
+                <td class="text-center">
+                    <a href="{{ path('competence_show', {'id': competence.id}) }}" title="Voir la compétence : {{competence.nom}}"><i class="far fa-eye"></i></a>
+                    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+
+                    <a href="{{ path('competence_edit', {'id': competence.id}) }}" title="Modifier la compétence : {{competence.nom}}"><i class="far fa-edit"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">Il n'y a pas de compétence, veulliez en saisir une.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+    <div class="row px-3">
+        <div class="ml-auto">
+            <a href="{{ path('competence_new') }}"><button class="primaire">Ajouter une compétence</button></a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

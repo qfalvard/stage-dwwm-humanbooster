@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récapitulatif des stages{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Récapitulatif des stages</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Stagiaire</th>
+                <th>Entreprise</th>
+                <th>Adresse de l'entreprise</th>
+                <th>Tuteur</th>
+                <th>Missions du stage</th>
+                <th>Suivi de stage</th>
+                <th>Documents à rendre</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for recapStage in recapStages %}
+            <tr>
+                <td>{{recapStage.utilisateur}}</td>
+                <td>{{recapStage.entreprise}}</td>
+                <td>{{recapStage.entreprise.adresse.ligne1}} - {{recapStage.entreprise.adresse.cp}} - {{recapStage.entreprise.adresse.commune.nom}}</td>
+                <td>???</td>
+                <td>???</td>
+                <td>???</td>
+                <td>???</td>
+                <td class="text-center"><a href="#" title="Afficher les détails du stage de {{recapStage.utilisateur}}"><i class="far fa-eye"></i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

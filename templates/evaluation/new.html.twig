@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Evaluation{% endblock %}
+
+{% block body %}
+<div class="encadre mb-5">
+
+    <h1>Créer une Evaluation</h1>
+
+    {{ include('evaluation/_form.html.twig') }}
+
+
+    <a href="{{ path('evaluation_index') }}">Retour à la liste</a>
+</div>
+{% endblock %}

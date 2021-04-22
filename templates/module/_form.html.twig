@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+{{ form_row(form.isTre, { 'label': 'Module TRE' }) }}
+{{ form_row(form.examen, { 'label': 'Est soumis au contrôle continu' }) }}
+{{ form_widget(form) }}
+<div class="row px-3">
+        <div class="mt-3">
+            <a class="secondaire p-2" href="{{ (path('titre_professionnel_show', {'id': titre.id})) }}">Retour à la liste des modules</a>
+        </div>
+        <div class="ml-auto">
+            <button class="primaire">Valider</button>
+        </div>
+{{ form_end(form) }}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Objectif{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Modifier l'Objectif</h1>
+    <div class="row px-3">
+        <div class="ml-auto">
+            {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                {{ include('objectif/_delete_form.html.twig') }}
+            {% endif %}
+        </div>
+    </div>
+    {{ include('objectif/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Module{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Modifier le Module</h1>
+    <div class="row px-3">
+        <div class="ml-auto">
+            {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                {{ include('module/_delete_form.html.twig') }}
+            {% endif %}
+        </div>
+    </div>
+    {{ include('module/_form.html.twig') }}
+
+</div>
+{% endblock %}

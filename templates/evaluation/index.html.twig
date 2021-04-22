@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evaluation index{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Evaluations</h1>
+    <div class="row px-3">
+        <div class="ml-auto">
+            <button class="primaire mb-2"> <a class="text-decoration-none" href="{{ path('evaluation_choisir_module', {'id': session.id}) }}">Créer une évaluation</a></button>
+        </div>
+    </div>
+{% for module in modules %}
+{{module.nom}}
+<table class="mb-5">
+    <thead>
+        <tr>
+            <th>Stagiaires</th>
+
+            {% for objectif in objectifs %}
+            {% if objectif.module.id == module.id %}
+            <th class="small">
+                {{objectif.nom}}
+            </th>
+            {% endif %}
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for evaluation in evaluations %}
+        {% if evaluation.module.nom == module.nom %}
+        <tr>
+            <th>
+                {{evaluation.utilisateur.prenom}} {{evaluation.utilisateur.nom}}
+            </th>
+            {% for objectif in objectifs %}
+            {% if module.id == objectif.id %}
+            <td>
+                {% if evaluation.niveauAcquisition == 5 %}
+                <p>❌</p>
+                {% elseif evaluation.niveauAcquisition == 10 %}
+                <p class="noteEnCours">~</p>
+                {% else %}
+                <p>✔</p>
+            </td>
+            {% endif %}
+            
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+<div class="row px-3">
+    <div class="ml-auto">
+        <button class="primaire mb-2"> <a class="text-decoration-none" href="{{ path('evaluation_choisir_module', {'id': session.id}) }}">Créer une évaluation</a></button> <hr>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,84 @@
+/*Attention : cette page css utilise des variables, pour les navigateurs non compatible ne pas oublier de rajouter le format standart en plus des var()*/
+:root{
+    --couleurPrimaire: #FFD715;
+    --couleurBtnSupprimer: #FF9255;
+}
+
+.encadre {
+    margin-top: 3em;
+    background-color: rgb(255, 255, 255);
+    border: solid 2px #FFD715;
+    padding: 20px;
+}
+
+#encadre {
+    margin-top: 3em;
+    background-color: rgb(255, 255, 255);
+    border: solid 2px rgb(41, 41, 41);
+    padding: 20px;
+}
+
+.encadre h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.encadre input {
+    border: solid 1px black;
+    border-radius: 5px;
+}
+
+.encadre .primaire {
+    background-color: #FFD715;
+    background-color: var(--couleurPrimaire);
+    width: 180px;
+    height: 50px;
+    color: black;
+    border: none;
+}
+
+.secondaire {
+    background-color: white;
+    height: 50px;
+    color: black;
+    border: solid 2px black;
+}
+.encadre .primaire:hover {
+    background-color: #FFD715;
+    background-color: var(--couleurPrimaire);
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.noteEnCours {
+    color: orange;
+    font-weight: bold;
+}
+.encadre .secondaire {
+    background: none;
+    height: 50px;
+
+    color: black;
+    border: 1px solid #FFD715;
+    border: 1px solid var(--couleurPrimaire);
+}
+
+.encadre .secondaire:hover {
+    background-color: #FFD715;
+    background-color: var(--couleurPrimaire);
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.btnSupprimer {
+    background-color: white;
+    width: 180px;
+    height: 40px;
+    color: black;
+    border: 1px solid #FF9255;
+    border: 1px solid var(--couleurBtnSupprimer);
+}
+
+.btnSupprimer:hover{
+    background-color: #FF9255;
+    background-color: var(--couleurBtnSupprimer);
+    color: rgba(0, 0, 0, 0.7);
+}

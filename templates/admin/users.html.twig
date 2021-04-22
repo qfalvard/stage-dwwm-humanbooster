@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+<div class="encadre">
+    <h1>Liste des utilisateurs</h1>
+    <table class="table users">
+        <thead>
+            <tr>
+                <th>Nom et Prénom</th>
+                <th>Email</th>
+                <th class="text-center">Actif</th>
+                <th class="text-center">Rôles</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {# On boucle sur les utilisateurs #}
+            {% for user in users %}
+            <tr>
+                <th>{{ user.nom|upper }} {{ user.prenom }}</th>
+                <td>{{ user.email }}</td>
+                <td class="text-center">
+                    {% if user.isActif %}
+                    <p>✔</p>
+                    {% else %}
+                    <p>❌</p>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {# On boucle sur les rôles #}
+                    {% for role in user.roles %}
+                    {% if role == "ROLE_ENCADRANT" %}
+                    Encadrant
+                    {% elseif role == "ROLE_FORMATEUR" %}
+                    Formateur
+                    {% elseif role == "ROLE_FORMATEUR_TRE" %}
+                    Formateur TRE
+                    {% elseif role == "ROLE_STAGIAIRE" %}
+                    Stagiaire
+                    {% elseif role == "ROLE_ADMIN" %}
+                    Administrateur
+                    {% endif %}
+                    {% endfor %}
+                </td>
+                {% if app.user.roles[0] == 'ROLE_ENCADRANT' %}
+                <td class="text-center">
+                    <a href="{{ path('utilisateurs_edit', {'id': user.id}) }}" title="Modifier les informations de l'utilisateur {{user.nom|upper}} {{user.prenom}}"><i class="far fa-edit"></i></a>
+                </td>
+                {% endif %}
+            </tr>
+
+            {% else %}
+            <p>Aucun utilisateur inscrit</p>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

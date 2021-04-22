@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une session{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Créer une session</h1>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col">
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                        <button class="btn btn-sm btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter un pays</button>
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}

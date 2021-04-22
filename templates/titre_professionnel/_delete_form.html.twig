@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('titre_professionnel_disable', {'id': titre_professionnel.id}) }}" onsubmit="return confirm('Êtes-vous sûr de désactiver ce titre professionnel ?');">
+    <input type="hidden" name="_method" value="DISABLE">
+    <input type="hidden" name="_token" value="{{ csrf_token('disable' ~ titre_professionnel.id) }}">
+    <button class="btnSupprimer">Désactiver le titre</button>
+</form>
